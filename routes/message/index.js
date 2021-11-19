@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { addMessage } from "./api.js";
 
-const app = Router()
+const route = Router()
 
-app.post("/message", async ({ body }, response) => {
+route.post("/message", async ({ body }, response) => {
   if (!body.session_id || !body.message_text) {
-    response.json({error: true})
+    response.json({error: "Missing required headers"})
   } else {
     await addMessage(body.session_id, body.message_text, (result) => {
       response.json(result)
@@ -13,4 +13,4 @@ app.post("/message", async ({ body }, response) => {
   }
 })
 
-export default app;
+export default route;

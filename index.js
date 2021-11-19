@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
-import postMessageRoute from "./routes/message/index.js"
+import postMessageRoute from "./routes/message/index.js";
+import getSessionRoute from "./routes/session/index";
 dotenv.config()
 
 
@@ -20,6 +21,7 @@ app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use(getSessionRoute)
 app.use(postMessageRoute)
 
 app.listen(PORT, function () {
