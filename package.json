@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "DEBUG=express:* NODE_ENV=development nodemon --experimental-modules --es-module-specifier-resolution=node server.js",
-    "start": "DEBUG=express:* NODE_ENV=production node --experimental-modules --es-module-specifier-resolution=node server.js"
+    "start": "npx prisma generate && NODE_ENV=production node --experimental-modules --es-module-specifier-resolution=node server.js"
   },
   "author": "Luke Scanlan",
   "license": "MIT",
@@ -22,5 +22,8 @@
   "devDependencies": {
     "nodemon": "^2.0.15",
     "prisma": "^3.5.0"
+  },
+  "engines": {
+    "node": "14.17.5"
   }
 }
