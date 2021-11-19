@@ -3,11 +3,12 @@ import { getSession } from "./api.js";
 
 const route = Router()
 
-route.post("/session", async ({ body }, response) => {
-  if (!body.session_id) {
+route.get("/session", async ({ body }, response) => {
+  const { device_id } = body;
+  if (!device_id) {
     response.json({error: "Body missing required fields"})
   } else {
-    await getSession(body.session_id, body.message_text, (result) => {
+    await getSession(device_id, (result) => {
       response.json(result)
     })
   }
