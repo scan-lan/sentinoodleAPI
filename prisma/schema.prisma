@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model action {
+  id                  Int      @id @default(autoincrement())
+  triggering_event_id String   @db.VarChar(16)
+  type                String   @db.VarChar(32)
+  body                String?  @db.VarChar(128)
+  action_taken        DateTime @db.DateTime(0)
+  event               event    @relation(fields: [triggering_event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "action_ibfk_2")
+
+  @@index([triggering_event_id], map: "triggering_event_id")
+}
+
+model event {
+  id           String   @id @db.VarChar(16)
+  session_id   Int
+  event_name   String   @db.VarChar(50)
+  published_at DateTime @db.DateTime(0)
+  room         String?  @db.VarChar(16)
+  session      session  @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "event_ibfk_1")
+  action       action[]
+
+  @@index([session_id], map: "session_id")
+}
+
+model session {
+  id                          Int      @id @default(autoincrement())
+  device_id                   String   @db.VarChar(24)
+  datetime_started            DateTime @db.DateTime(0)
+  medication_name             String?  @db.VarChar(64)
+  medication_dosage           Decimal? @db.Decimal(5, 2)
+  dosage_frequency            Int?
+  messages                    String?  @db.VarChar(1024)
+  message_index               Int?
+  message_wait_period_minutes Int?
+  doses_taken_today           Int?
+  event                       event[]
+}

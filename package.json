@@ -3,19 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon index.js",
-    "start": "NODE_ENV=production node index.js"
+    "dev": "NODE_ENV=development nodemon --experimental-modules --es-module-specifier-resolution=node index.js",
+    "start": "NODE_ENV=production node --experimental-modules --es-module-specifier-resolution=node index.js"
   },
   "author": "Luke Scanlan",
   "license": "MIT",
   "dependencies": {
+    "@prisma/client": "^3.5.0",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.6.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prisma": "^3.5.0"
   }
 }
