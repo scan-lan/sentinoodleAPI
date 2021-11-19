@@ -31,15 +31,24 @@ model event {
 }
 
 model session {
-  id                          Int      @id @default(autoincrement())
-  device_id                   String   @db.VarChar(24)
-  datetime_started            DateTime @db.DateTime(0)
-  medication_name             String?  @db.VarChar(64)
-  medication_dosage           Decimal? @db.Decimal(5, 2)
+  id                          Int        @id @default(autoincrement())
+  device_id                   String     @db.VarChar(24)
+  datetime_started            DateTime   @db.DateTime(0)
+  medication_name             String?    @db.VarChar(64)
+  medication_dosage           Decimal?   @db.Decimal(5, 2)
   dosage_frequency            Int?
-  messages                    String?  @db.VarChar(1024)
   message_index               Int?
   message_wait_period_minutes Int?
   doses_taken_today           Int?
   event                       event[]
+  messages                    messages[]
+}
+
+model messages {
+  id           Int     @id @default(autoincrement())
+  session_id   Int
+  message_text String  @db.VarChar(128)
+  session      session @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "messages_ibfk_1")
+
+  @@index([session_id], map: "session_id")
 }
