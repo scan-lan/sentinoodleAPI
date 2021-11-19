@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
-// import postMessage from "./postMessage.js";
 import postMessageRoute from "./routes/message/index.js"
 dotenv.config()
 
@@ -11,15 +10,14 @@ dotenv.config()
 const PORT = process.env.PORT || 5000
 const app = express()
 
-// postMessage()
-
 app.use(helmet())
 
-app.use(cors({
+const corsOptions = {
   origin: process.env.NODE_ENV === "development" ? "*" : /sentinoodle-front-end-hx5kt35wna-nw\.a\.run\.app/
-}))
+}
+app.use(cors(corsOptions))
 
-app.use(bodyParser.json)
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(postMessageRoute)

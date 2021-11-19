@@ -5,7 +5,7 @@ const { PrismaClient } = pkg;
 const prisma = new PrismaClient()
 
 const _addMessage = async (session_id, message_text) => {
-  await prisma.message.create({
+  return await prisma.message.create({
     data: {
       session_id,
       message_text
@@ -13,15 +13,15 @@ const _addMessage = async (session_id, message_text) => {
   })
 }
 
-const addMessage = (session_id, message_text, callback) => {
-  _addMessage(session_id, message_text)
+const addMessage = async (session_id, message_text, callback) => {
+  const message = await _addMessage(session_id, message_text)
     .catch(e => {
       callback({error: e, success: false})
     })
     .finally(async () => {
       await prisma.$disconnect()
-      callback({success: true})
     })
+  callback(message)
   console.dir(message)
 }
 
