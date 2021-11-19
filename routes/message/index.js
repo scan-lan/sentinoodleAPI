@@ -4,10 +4,11 @@ import { addMessage } from "./api.js";
 const route = express.Router();
 
 route.post("/message", async ({ body }, response) => {
-  if (!body.session_id || !body.message_text) {
-    response.json({error: "Missing required headers"});
+  const { device_id, message_text } = body;
+  if (!device_id || !message_text) {
+    response.json({error: "Body missing required fields"});
   } else {
-    await addMessage(body.session_id, body.message_text, (result) => {
+    await addMessage(device_id, message_text, (result) => {
       response.json(result);
     })
   }
