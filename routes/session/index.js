@@ -1,15 +1,15 @@
-import { Router } from "express";
+import express from "express";
 import { getSession } from "./api.js";
 
-const route = Router()
+const route = express.Router();
 
 route.get("/session", async ({ body }, response) => {
   const { device_id } = body;
   if (!device_id) {
-    response.json({error: "Body missing required fields"})
+    response.json({error: "Body missing required fields"});
   } else {
     await getSession(device_id, (result) => {
-      response.json(result)
+      response.json(result);
     })
   }
 })
