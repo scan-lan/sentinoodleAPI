@@ -1,17 +1,24 @@
 import express from "express";
-import { addMessage } from "./api.js";
+import { postMessage } from "./api.js";
 
-const route = express.Router();
+const makeRoute = (prismaClient) => {
+  const route = express.Router();
 
-route.post("/message", async (request, response) => {
-  const { device_id, message_text } = request.body;
-  if (!device_id || !message_text) {
-    response.json({error: "Body missing required fields"});
-  } else {
-    await addMessage(device_id, message_text, (result) => {
-      response.json(result);
-    })
-  }
-})
+  route.post("/message", (request, response) => {
+    const { device_id, message_text } = request.body;
+    if (!device_id || !message_text) {
+      response.json({error: "Body missing required fields"});
+    } else {
+      postMessage(prismaClient, device_id, message_text, (result) => {
+        response.json(result);
+      })
+        .catch(e => {
+          response.json({error: e})
+        })
+    }
+  })
 
-export default route;
+  return route;
+}
+
+export default makeRoute;

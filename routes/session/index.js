@@ -12,6 +12,9 @@ const makeRoute = (prismaClient) => {
       getSession(prismaClient, device_id, (result) => {
         response.json(result);
       })
+        .catch(e => {
+          response.json({error: e})
+        })
     }
   })
 
