@@ -4,10 +4,10 @@ import { getSession } from "./api.js";
 const makeRoute = (prismaClient) => {
   const route = express.Router();
 
-  route.get("/session", (request , response) => {
-    const { device_id } = request.body;
+  route.get("/sessionByDeviceID/:deviceId", (request , response) => {
+    const device_id = request.params.deviceId;
     if (!device_id) {
-      response.json({error: "Body missing required fields"});
+      response.json({error: "Missing required value in url: deviceId. Please use url like so: {URL}/session/deviceId"});
     } else {
       getSession(prismaClient, device_id, (result) => {
         response.json(result);
