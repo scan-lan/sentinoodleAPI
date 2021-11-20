@@ -1,13 +1,13 @@
 
-const _postMessage = (prisma, device_id, message_text) => prisma.message.create({
+const _postMessage = (prisma, session_id, message_text) => prisma.message.create({
   data: {
-    device_id: device_id,
+    session_id: session_id,
     message_text: message_text
   }
 })
 
-const postMessage = async (prisma, device_id, message_text, callback) => {
-  const message = await _postMessage(prisma, device_id, message_text)
+const postMessage = async (prisma, session_id, message_text, callback) => {
+  const message = await _postMessage(prisma, session_id, message_text)
     .catch(e => {
       callback({error: e, success: false});
     })

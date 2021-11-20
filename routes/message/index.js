@@ -5,11 +5,11 @@ const makeRoute = (prismaClient) => {
   const route = express.Router();
 
   route.post("/message", (request, response) => {
-    const { device_id, message_text } = request.body;
-    if (!device_id || !message_text) {
+    const { session_id, message_text } = request.body;
+    if (!session_id || !message_text) {
       response.json({error: "Body missing required fields"});
     } else {
-      postMessage(prismaClient, device_id, message_text, (result) => {
+      postMessage(prismaClient, session_id, message_text, (result) => {
         response.json(result);
       })
         .catch(e => {
