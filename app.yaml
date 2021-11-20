@@ -1,2 +1,4 @@
 runtime: nodejs
 env: flex
+env_variables:
+  DB_URL: "mysql://webClient:tBeZ7r06TjU0qPB8V6ES@35.246.60.30:3306/sentinoodlev2?connection_limit=3"
