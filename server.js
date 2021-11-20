@@ -3,13 +3,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
+import prismaPkg from '@prisma/client';
 import postMessageRoute from "./routes/message/index.js";
-import getSessionRoute from "./routes/session/index";
+import makeRoute from "./routes/session/index";
 dotenv.config()
+const { PrismaClient } = prismaPkg;
 
 
 const PORT = process.env.PORT || 5000
 const app = express()
+const prisma = new PrismaClient()
 
 app.use(helmet())
 
@@ -21,7 +24,7 @@ app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use(getSessionRoute)
+app.use(makeRoute(prisma))
 app.use(postMessageRoute)
 
 const server = app.listen(PORT, () => {

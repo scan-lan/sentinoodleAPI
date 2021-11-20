@@ -3,8 +3,8 @@ import { addMessage } from "./api.js";
 
 const route = express.Router();
 
-route.post("/message", async ({ body }, response) => {
-  const { device_id, message_text } = body;
+route.post("/message", async (request, response) => {
+  const { device_id, message_text } = request.body;
   if (!device_id || !message_text) {
     response.json({error: "Body missing required fields"});
   } else {
