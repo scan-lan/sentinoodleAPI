@@ -17,9 +17,11 @@ const prisma = new PrismaClient()
 app.use(helmet())
 
 const corsOptions = {
-  origin: process.env.NODE_ENV === "development" ? "*" : /sentinoodle-front-end-hx5kt35wna-nw\.a\.run\.app|77\.100\.88\.87/
+  origin: process.env.NODE_ENV === "development" ?
+    "*" :
+    /sentinoodle-front-end-hx5kt35wna-nw\.a\.run\.app|77\.100\.88\.87:[0-9]{1,4}/
 }
-app.use(cors(corsOptions))
+app.use(cors(true))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
