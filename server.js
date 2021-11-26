@@ -4,8 +4,9 @@ import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import prismaPkg from '@prisma/client';
-import makeMessageRoute from "./routes/message/index.js";
+import makeMessageRoute from "./routes/message/index";
 import makeSessionRoute from "./routes/session/index";
+import makeSummaryRoute from "./routes/daySummary/index";
 dotenv.config()
 const { PrismaClient } = prismaPkg;
 
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(makeSessionRoute(prisma))
 app.use(makeMessageRoute(prisma))
+app.use(makeSummaryRoute(prisma))
 
 const server = app.listen(PORT, () => {
   const host = server.address().address;

@@ -9,12 +9,12 @@ const _getSession = (prisma, device_id) => prisma.session.findFirst({
 })
 
 const getSession = async (prisma, device_id, callback) => {
-  const message = await _getSession(prisma, device_id)
+  const session = await _getSession(prisma, device_id)
     .catch(e => {
       callback({error: e, success: false})
     })
-  callback(message)
-  console.dir(message)
+  callback(session)
+  console.dir(session)
 }
 
 export { getSession };
