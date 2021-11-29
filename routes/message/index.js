@@ -4,16 +4,16 @@ import { postMessage } from "./api.js";
 const makeRoute = (prismaClient) => {
   const route = express.Router();
 
-  route.post("/message", (request, response) => {
-    const { session_id, message_text } = request.body;
+  route.post("/message", ({ body }, response) => {
+    const { session_id, message_text } = body;
     if (!session_id || !message_text) {
-      response.json({error: "Body missing required fields"});
+      response.status(400).json({error: `Body missing required fields: ${body}`});
     } else {
       postMessage(prismaClient, session_id, message_text, (result) => {
-        response.json(result);
+        response.status(200).json(result);
       })
         .catch(e => {
-          response.json({error: e})
+          response.status(500).json({error: e})
         })
     }
   })

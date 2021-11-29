@@ -31,17 +31,17 @@ model event {
 }
 
 model session {
-  id                          Int       @id @default(autoincrement())
-  device_id                   String    @db.VarChar(24)
-  datetime_started            DateTime  @db.DateTime(0)
-  medication_name             String?   @db.VarChar(64)
-  medication_dosage           Decimal?  @db.Decimal(5, 2)
-  dosage_frequency            Int?
+  id                          Int         @id @default(autoincrement())
+  device_id                   String      @db.VarChar(24)
+  medication_id               Int?
+  datetime_started            DateTime    @db.DateTime(0)
   message_index               Int?
   message_wait_period_minutes Int?
-  doses_taken_today           Int?
+  medication                  medication? @relation(fields: [medication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "session_ibfk_1")
   event                       event[]
   message                     message[]
+
+  @@index([medication_id], map: "medication_id")
 }
 
 model message {
@@ -51,4 +51,13 @@ model message {
   session      session @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "message_ibfk_1")
 
   @@index([session_id], map: "session_id")
+}
+
+model medication {
+  id                Int       @id @default(autoincrement())
+  name              String    @db.VarChar(64)
+  dosage            Decimal   @db.Decimal(5, 2)
+  dosage_frequency  Int
+  doses_taken_today Int?
+  session           session[]
 }

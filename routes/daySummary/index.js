@@ -7,14 +7,14 @@ const makeRoute = (prismaClient) => {
   route.get("/daySummary/:sessionId", (request , response) => {
     const session_id = parseInt(request.params.sessionId);
     if (!session_id) {
-      response.json({error: "Missing required value in url: sessionId. Please use url like so: {URL}/daySummary/sessionId"});
+      response.status(400).json({error: "Missing required value in url: sessionId. Please use url like so: {URL}/daySummary/sessionId"});
     } else {
       getSummary(prismaClient, session_id, (result) => {
-        response.json(result);
+        response.status(200).json({...result});
       })
-        // .catch(e => {
-        //   response.json({error: e})
-        // })
+        .catch(e => {
+          response.status(500).json({error: e})
+        })
     }
   })
 
