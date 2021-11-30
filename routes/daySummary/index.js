@@ -13,6 +13,7 @@ const makeRoute = (prismaClient) => {
         response.status(200).json({...result});
       })
         .catch(e => {
+          console.log(e)
           response.status(500).json({error: e})
         })
     }

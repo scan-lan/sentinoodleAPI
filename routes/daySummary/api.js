@@ -1,4 +1,16 @@
 
+const buildSummaryObject = (lastRoomEvent, firstEventToday, lastAteEvent, messagesToday) => {
+  const last_room_entered = (lastRoomEvent) ? {room: lastRoomEvent.room, time: lastRoomEvent.published_at} : null;
+  const time_woke_up = (firstEventToday) ? firstEventToday.published_at : null;
+  const last_ate = (lastAteEvent) ? lastAteEvent.published_at : null;
+  return {
+    last_room_entered: last_room_entered,
+    time_woke_up: time_woke_up,
+    messages_received_today: messagesToday,
+    last_ate: last_ate
+  }
+}
+
 const _getSummary = async (prisma, session_id) => {
   const sessionIdAndMotionDetected = {
     session_id: {
@@ -63,16 +75,7 @@ const _getSummary = async (prisma, session_id) => {
     }
   })
   const messagesReceived = affirmationActionsToday.map((action) => JSON.parse(action.body).message)
-
-  return {
-    last_room_entered: {
-      room: lastRoomEvent.room,
-      time: lastRoomEvent.published_at
-    },
-    time_woke_up: firstEventToday.published_at,
-    messages_received_today: messagesReceived,
-    last_ate: lastAteEvent.published_at
-  }
+  return buildSummaryObject(lastRoomEvent, firstEventToday, lastAteEvent, messagesReceived);
 }
 
 const getSummary = async (prisma, session_id, callback) => {
