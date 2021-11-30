@@ -1,4 +1,16 @@
 
+const _getMessages = (prisma, session_id) => prisma.message.findMany({
+  where: {
+    session_id: session_id
+  }
+})
+
+const getMessages = async (prisma, session_id, callback) => {
+  const messages = await _getMessages(prisma, session_id)
+  callback(messages)
+  console.log(messages)
+}
+
 const _postMessage = (prisma, session_id, message_text) => prisma.message.create({
   data: {
     session_id: session_id,
@@ -15,4 +27,4 @@ const postMessage = async (prisma, session_id, message_text, callback) => {
   console.dir(message)
 }
 
-export { postMessage };
+export { getMessages, postMessage };
