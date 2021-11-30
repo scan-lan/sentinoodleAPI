@@ -74,7 +74,7 @@ const _getSummary = async (prisma, session_id) => {
       }
     }
   })
-  const messagesReceived = affirmationActionsToday.map((action) => JSON.parse(action.body).message)
+  const messagesReceived = affirmationActionsToday.map((action) => action.body)
   return buildSummaryObject(lastRoomEvent, firstEventToday, lastAteEvent, messagesReceived);
 }
 
