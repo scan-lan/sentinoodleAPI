@@ -20,7 +20,8 @@ const makeRoute = (prismaClient) => {
 
   route.post("/messageWaitTime", ({ body }, response) => {
     const { session_id, message_wait_period_minutes } = body;
-    if (!session_id || !message_wait_period_minutes) {
+    if (!session_id || (!message_wait_period_minutes && message_wait_period_minutes !== 0)) {
+      console.log("Body missing required fields")
       response.status(400).json({error: "Body missing required fields"});
     } else {
       updateMessageWaitTime(prismaClient, session_id, message_wait_period_minutes, (result) => {
