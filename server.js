@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import prismaPkg from '@prisma/client';
+import makeMedicationRoute from "./routes/medication/index"
 import makeMessageRoute from "./routes/message/index";
 import makeSessionRoute from "./routes/session/index";
 import makeSummaryRoute from "./routes/daySummary/index";
@@ -27,9 +28,10 @@ app.use(cors(true))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use(makeSessionRoute(prisma))
-app.use(makeMessageRoute(prisma))
-app.use(makeSummaryRoute(prisma))
+app.use(makeMedicationRoute(prisma));
+app.use(makeMessageRoute(prisma));
+app.use(makeSessionRoute(prisma));
+app.use(makeSummaryRoute(prisma));
 
 const server = app.listen(PORT, () => {
   const host = server.address().address;
