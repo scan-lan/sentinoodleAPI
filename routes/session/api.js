@@ -33,4 +33,20 @@ const updateMessageWaitTime = async (prisma, session_id, message_wait_period_min
   console.dir(response)
 }
 
-export { getSession, updateMessageWaitTime };
+const _postSession = (prisma, device_id, medication_id, message_wait_period_minutes) => prisma.session.create({
+  data: {
+    device_id: device_id,
+    medication_id: medication_id,
+    datetime_started: new Date(),
+    message_index: 0,
+    message_wait_period_minutes: message_wait_period_minutes
+  }
+})
+
+const postSession = async (prisma, device_id, medication_id, message_wait_period_minutes, callback) => {
+  const session = await _postSession(prisma, device_id, medication_id, message_wait_period_minutes);
+  callback(session);
+  console.dir(session);
+}
+
+export { getSession, updateMessageWaitTime, postSession };

@@ -1,7 +1,7 @@
 import express from "express";
-import { getSession, updateMessageWaitTime } from "./api.js";
+import { getSession, updateMessageWaitTime, postSession } from "./api.js";
 
-const makeRoute = (prismaClient) => {
+const makeRoutes = (prismaClient) => {
   const route = express.Router();
 
   route.get("/sessionByDeviceID/:deviceId", (request , response) => {
@@ -18,7 +18,7 @@ const makeRoute = (prismaClient) => {
     }
   })
 
-  route.post("/messageWaitTime", ({ body }, response) => {
+  route.put("/messageWaitTime", ({ body }, response) => {
     const { session_id, message_wait_period_minutes } = body;
     if (!session_id || (!message_wait_period_minutes && message_wait_period_minutes !== 0)) {
       console.log("Body missing required fields")
@@ -33,7 +33,24 @@ const makeRoute = (prismaClient) => {
     }
   })
 
+  route.post("/session", ({ body }, response) => {
+    const { device_id, medication_id, message_wait_period_minutes } = body;
+    if (device_id &&
+      (medication_id || medication_id === 0) ||
+      (message_wait_period_minutes || message_wait_period_minutes === 0)) {
+      postSession(prismaClient, device_id, medication_id, message_wait_period_minutes, (result) => {
+        response.status(200).json(result);
+      })
+        .catch(e => {
+          response.status(500).json({error: e})
+        })
+    } else {
+      console.log("Body missing required fields")
+      response.status(400).json({error: "Body missing required fields"});
+    }
+  })
+
   return route;
 }
 
-export default makeRoute;
+export default makeRoutes;
