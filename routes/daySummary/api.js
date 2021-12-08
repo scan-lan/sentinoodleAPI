@@ -20,8 +20,8 @@ const _getSummary = async (prisma, session_id) => {
       equals: "motion_detected"
     }
   }
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const lastRoomEvent = await prisma.event.findFirst({
     where: {
@@ -70,6 +70,13 @@ const _getSummary = async (prisma, session_id) => {
         },
         type: {
           equals: "give_affirmation"
+        },
+        event: {
+          is: {
+            session_id: {
+              equals: session_id
+            }
+          }
         }
       }
     }
